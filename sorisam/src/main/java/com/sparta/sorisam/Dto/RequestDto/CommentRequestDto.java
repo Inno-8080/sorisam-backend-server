@@ -1,10 +1,11 @@
 package com.sparta.sorisam.Dto.RequestDto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class CommentRequestDto {
-    private final String comment;
+    private String contents;
 }
