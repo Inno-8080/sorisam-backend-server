@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "postingLikes") //테이블 이름으로 괜찮은지?
 @NoArgsConstructor
 @Getter
 @Setter
@@ -22,5 +22,10 @@ public class PostingLike {
 
     @Column(nullable = false)
     private String username;
+
+    public PostingLike(String username, Posting posting) {
+        this.username = username;
+        this.posting = posting;
+    }
 
 }

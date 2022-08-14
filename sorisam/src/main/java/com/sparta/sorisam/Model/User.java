@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Table(name = "Users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -24,8 +24,10 @@ public class User {
     //자기소개
     String intro;
 
-    public User(String username, String password) {
+    public User(String username, String password, String img, String intro) {
         this.username = username;
         this.password = password;
+        this.img = img;
+        this.intro = intro;
     }
 }

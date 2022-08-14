@@ -1,40 +1,68 @@
 package com.sparta.sorisam.Model;
 
 
+import com.sparta.sorisam.Dto.RequestDto.PostingRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-
+@NoArgsConstructor
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @Table(name = "posting")
 public class Posting extends Timestamped{
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postingId;
 
     @Column(nullable = false)
     private String title;
 
-    //받아올것
     @Column(nullable = false)
-    private String img;
+    private String contents;
+
+    @Column
+    private String filePath;
 
     //받아올것
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = false)
-    private String filePath;
+    @Column
+    private String img;
 
-    @Column(nullable = false)
-    private String contents;
+    @Column
+    private String intro;
 
-    @Column(nullable = false)
-    private Long cntPostLike;
+    @Column
+    private Long cntPostLike = 0L;
+
+//    @Builder
+//    public Posting(String username, String title, String img, String filePath, String contents){
+//        this.username = username;
+//        this.title = title;
+//        this.img = img;
+//        this.filePath = filePath;
+//        this.contents = contents;
+//    }
+
+    public Posting(PostingRequestDto requestDto, String username, String img, String intro) {
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
+        this.filePath = requestDto.getFilePath();
+        this.username = username;
+        this.img = img;
+        this.intro = intro;
+    }
+
+    public void updatePosting(String title, String filePath, String contents) {
+        this.title = title;
+        this.filePath = filePath;
+        this.contents = contents;
+    }
 
 }
