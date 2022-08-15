@@ -19,13 +19,14 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/posts")
 public class PostingController {
 
     private final PostingService postingService;
     private final PostingRepository postingRepository;
 
     // 게시글 작성
-    @PostMapping("/api/posts")
+    @PostMapping
     public CommonResponse<?> createPosting(@RequestBody PostingRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // 로그인 되어 있는 ID의 username
 
@@ -41,33 +42,34 @@ public class PostingController {
     }
 
     // 게시글 조회
-    @GetMapping("/api/posts")
+    @GetMapping
     public List<PostingResponseDto> getPosting() {
         return postingService.getPosting();
     }
 
     // 게시글 디테일 조회
-    @GetMapping("/api/posts/{id}")
+    @GetMapping("/{id}")
     public PostingDetailResponseDto getDetailPosting(@PathVariable Long id) {
         return postingService.getDetailPosting(id);
     }
 
     // 게시글 수정
-    @PutMapping("/api/posts/{id}")
+    @PutMapping("/{id}")
     public CommonResponse<?> updatePosting(@PathVariable long id, @RequestBody PostingUpdateRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         if (userDetails == null) {
             throw new InvalidValueException(ErrorCode.HANDLE_ACCESS_DENIED);
         }
 
-        requestDto.setUsername(userDetails.getUsername());
+        String username = userDetails.getUsername();
+        requestDto.setUsername(username);
 
-        postingService.updatePosting(id, requestDto);
+        postingService.updatePosting(id, requestDto, username);
         return ApiUtils.success(200, "게시글이 수정되었습니다.");
     }
 
     // 게시글 삭제
-    @DeleteMapping("/api/posts/{id}")
+    @DeleteMapping("/{id}")
     public CommonResponse<?> deletePosting(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         if (userDetails == null) {

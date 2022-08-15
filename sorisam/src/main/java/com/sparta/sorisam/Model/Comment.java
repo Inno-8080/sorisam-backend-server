@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "comment")
 public class Comment extends Timestamped {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
     @ManyToOne

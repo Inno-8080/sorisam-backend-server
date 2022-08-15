@@ -33,6 +33,18 @@ public class PostingService {
     // 게시글 작성
     @Transactional
     public Posting createPosting(PostingRequestDto postingRequestDto, String username, String img, String intro) {
+        String title = postingRequestDto.getTitle();
+        String contents = postingRequestDto.getContents();
+        String filePath = postingRequestDto.getFilePath();
+
+        if (title.length() < 1) {
+            throw new InvalidValueException(ErrorCode.INVALID_INPUT_TITLE);
+        } else if (contents.length() < 1) {
+            throw new InvalidValueException(ErrorCode.INVALID_INPUT_CONTENTS);
+        } else if (filePath.length() < 1) {
+            throw new InvalidValueException(ErrorCode.INVALID_INPUT_FILEPATH);
+        }
+
         return postingRepository.save(new Posting(postingRequestDto, username, img, intro));
     }
 
@@ -70,7 +82,23 @@ public class PostingService {
 
     // 게시글 수정
     @Transactional
-    public void updatePosting(Long id, PostingUpdateRequestDto dto) {
+    public void updatePosting(Long id, PostingUpdateRequestDto dto, String userName) {
+        if (!(userName.equals(exists(id).getUsername()))) {
+            throw new InvalidValueException(ErrorCode.NOT_AUTHORIZED);
+        }
+
+        String title = dto.getTitle();
+        String contents = dto.getContents();
+        String filePath = dto.getFilePath();
+
+        if (title.length() < 1) {
+            throw new InvalidValueException(ErrorCode.INVALID_INPUT_TITLE);
+        } else if (contents.length() < 1) {
+            throw new InvalidValueException(ErrorCode.INVALID_INPUT_CONTENTS);
+        } else if (filePath.length() < 1) {
+            throw new InvalidValueException(ErrorCode.INVALID_INPUT_FILEPATH);
+        }
+
         Posting existingPosting = exists(id);
         existingPosting.updatePosting(dto.getTitle(), dto.getFilePath(), dto.getContents());
         postingRepository.save(existingPosting);

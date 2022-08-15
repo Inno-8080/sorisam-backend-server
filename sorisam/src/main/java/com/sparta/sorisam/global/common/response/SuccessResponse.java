@@ -5,19 +5,23 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class CommonResponse<T> {
+public class SuccessResponse<M> {
     private final int code;
     private final boolean success;
 
+    private String message;
+
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final T result;
+    private final M result;
 
 
     @Builder
-    public CommonResponse(int code, boolean success, T result) {
+    public SuccessResponse(int code, boolean success, String message, M result) {
         this.code = code;
         this.success = success;
+        this.message = message;
         this.result = result;
     }
+
 }

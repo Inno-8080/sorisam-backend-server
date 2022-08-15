@@ -19,9 +19,12 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
     //사진
     String img;
+
     //자기소개
+    @Column(nullable = false)
     String intro;
 
     public User(String username, String password, String img, String intro) {

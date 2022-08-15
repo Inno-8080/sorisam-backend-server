@@ -45,6 +45,8 @@ public class UserService {
             throw new InvalidValueException(ErrorCode.NOTEQUAL_INPUT_PASSWORD);
         } else if (password.length() < 4) {
             throw new InvalidValueException(ErrorCode.INVALID_PASSWORD);
+        } else if (intro.length() < 1) {
+            throw new InvalidValueException(ErrorCode.INVALID_INPUT_INTRO);
         }
 
         userRepository.save(new User(username, passwordEncoder.encode(password), img, intro));

@@ -1,6 +1,7 @@
 package com.sparta.sorisam.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sparta.sorisam.Dto.RequestDto.PostingRequestDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @Entity
 @Getter
@@ -25,7 +29,7 @@ public class Posting extends Timestamped{
     @Column(nullable = false)
     private String contents;
 
-    @Column
+    @Column(nullable = false)
     private String filePath;
 
     //받아올것
@@ -38,8 +42,12 @@ public class Posting extends Timestamped{
     @Column
     private String intro;
 
-    @Column
-    private Long cntPostLike = 0L;
+    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"posting"})
+    private List<PostingLike> postingLikeList = new ArrayList<>();
+
+//    @Column
+//    private Long cntPostLike = 0L;
 
 //    @Builder
 //    public Posting(String username, String title, String img, String filePath, String contents){
