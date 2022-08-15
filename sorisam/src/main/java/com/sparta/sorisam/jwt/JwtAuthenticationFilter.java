@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -23,6 +24,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         // 헤더에서 JWT 를 받아온다.
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        // 저장된 JWT 에서 "Bearer " 문자열 부분 제거하고 토큰값만 남김
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
         // 유효한 토큰인지 확인한다.
         if (token != null && jwtTokenProvider.validateToken(token)) {
             try {
