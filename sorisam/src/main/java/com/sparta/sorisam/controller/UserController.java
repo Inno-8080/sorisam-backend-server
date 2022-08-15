@@ -21,13 +21,13 @@ public class UserController {
     private final UserService userService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/user/signup")
+    @PostMapping("/api/signup")
     public CommonResponse<?> registerUser(@Valid @RequestBody SignupRequestDto requestDto) {
         userService.registerUser(requestDto);
         return ApiUtils.success(201, null);
     }
 
-    @PostMapping("/user/login")
+    @PostMapping("/api/login")
     public CommonResponse<?> login(@RequestBody LoginRequestDto loginRequestDto) {
         String token = userService.login(loginRequestDto);
         return ApiUtils.success(200, token);

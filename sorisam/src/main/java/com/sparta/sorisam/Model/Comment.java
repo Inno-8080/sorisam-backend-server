@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 @Table(name = "comment")
 public class Comment extends Timestamped {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentId;
@@ -41,14 +40,10 @@ public class Comment extends Timestamped {
 
     public Comment(Posting post, String contents) {
         this.posting = post;
-        this.username = "로그인된유저"; //로그인된 유저 정보 받아오기
+        this.username = ""; //로그인된 유저 정보 받아오기
         this.contents = contents;
         this.cntLike = 0L;
         this.recomments = new ArrayList<>();
-    }
-    public void confirmPost(Posting post) {
-        this.posting = post;
-        //post.addCommentlist(this);
     }
 
     public void update(CommentRequestDto requestDto) {
@@ -68,14 +63,5 @@ public class Comment extends Timestamped {
     public void deleteRecomment(Recomment recomment) {
         this.recomments.remove(this.recomments.indexOf(recomment));
     }
-
-
-//    public Comment(Posting posting, CommentRequestDto requestDto, UserDetailsImpl userDetails) {
-//        this.posting = posting;
-//        this.comment = requestDto.getComment();
-//        this.username = userDetails.getUsername();
-//        this.cntLike = 0L;
-//
-//    }
 
 }

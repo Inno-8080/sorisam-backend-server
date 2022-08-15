@@ -31,7 +31,7 @@ public class Recomment extends Timestamped {
 
     public Recomment(Comment comment, String contents) {
         this.comment = comment;
-        this.username = "로그인된유저"; //로그인된 유저 정보 받아오기
+        this.username = ""; //로그인된 유저 정보 받아오기
         this.contents = contents;
     }
 
