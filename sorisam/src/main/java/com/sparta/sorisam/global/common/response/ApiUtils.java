@@ -4,4 +4,8 @@ public class ApiUtils {
     public static <T> CommonResponse<T> success(int code, T result) {
         return new CommonResponse<>(code, true, result);
     }
+
+    public static <M> SuccessResponse<M> loginsuccess(int code, String message, M result) {
+        return new SuccessResponse<>(code, true, message, result);
+    }
 }

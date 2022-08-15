@@ -2,7 +2,8 @@ package com.sparta.sorisam.controller;
 
 import com.sparta.sorisam.Dto.RequestDto.CommentRequestDto;
 import com.sparta.sorisam.Model.Comment;
-import com.sparta.sorisam.Model.Recomment;
+import com.sparta.sorisam.global.common.response.ApiUtils;
+import com.sparta.sorisam.global.common.response.CommonResponse;
 import com.sparta.sorisam.global.error.exception.ErrorCode;
 import com.sparta.sorisam.global.error.exception.InvalidValueException;
 import com.sparta.sorisam.security.UserDetailsImpl;
@@ -31,57 +32,63 @@ public class CommentController {
     }
 
     @PostMapping("/comment") //댓글 생성
-    public Comment createComment(@RequestBody CommentRequestDto requestDto, @PathVariable Long postingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public CommonResponse<?> createComment(@RequestBody CommentRequestDto requestDto, @PathVariable Long postingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         //로그인 여부 확인
         if (userDetails == null) {
             throw new InvalidValueException(ErrorCode.HANDLE_ACCESS_DENIED);
         }
-        return commentService.commentCreate(requestDto, postingId);
+        commentService.commentCreate(requestDto, postingId);
+        return ApiUtils.success(200, "댓글이 등록되었습니다.");
     }
 
     @PutMapping("/comment/{commentId}") //댓글 수정
-    public Comment updateComment(@RequestBody CommentRequestDto requstDto, @PathVariable Long postingId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public CommonResponse<?> updateComment(@RequestBody CommentRequestDto requstDto, @PathVariable Long postingId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //로그인 여부 확인
         if (userDetails == null) {
             throw new InvalidValueException(ErrorCode.HANDLE_ACCESS_DENIED);
         }
-        return commentService.commentUpdate(requstDto, postingId, commentId, userDetails.getUsername());
+        commentService.commentUpdate(requstDto, postingId, commentId, userDetails.getUsername());
+        return ApiUtils.success(200, "댓글이 수정되었습니다.");
     }
 
     @DeleteMapping("/comment/{commentId}") //댓글 삭제
-    public Long deleteComment(@PathVariable Long postingId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public CommonResponse<?> deleteComment(@PathVariable Long postingId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //로그인 여부 확인
         if (userDetails == null) {
             throw new InvalidValueException(ErrorCode.HANDLE_ACCESS_DENIED);
         }
-        return commentService.commentDelete(commentId, userDetails.getUsername());
+        commentService.commentDelete(commentId, userDetails.getUsername());
+        return ApiUtils.success(200, "댓글이 삭제되었습니다.");
     }
 
     @PostMapping("/comment/{commentId}/recomment") //대댓글 생성
-    public Recomment createRecomment(@RequestBody CommentRequestDto requestDto, @PathVariable Long postingId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public CommonResponse<?> createRecomment(@RequestBody CommentRequestDto requestDto, @PathVariable Long postingId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         //로그인 여부 확인
         if (userDetails == null) {
             throw new InvalidValueException(ErrorCode.HANDLE_ACCESS_DENIED);
         }
-        return commentService.recommentCreate(requestDto, commentId);
+        commentService.recommentCreate(requestDto, commentId);
+        return ApiUtils.success(200, "대댓글이 등록되었습니다.");
     }
 
     @PutMapping("/comment/{commentId}/recomment/{recommentId}") //대댓글 수정
-    public Recomment updateRecomment(@RequestBody CommentRequestDto requestDto, @PathVariable Long postingId, @PathVariable Long commentId, @PathVariable Long recommentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public CommonResponse<?> updateRecomment(@RequestBody CommentRequestDto requestDto, @PathVariable Long postingId, @PathVariable Long commentId, @PathVariable Long recommentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         //로그인 여부 확인
         if (userDetails == null) {
             throw new InvalidValueException(ErrorCode.HANDLE_ACCESS_DENIED);
         }
-        return commentService.recommentUpdate(requestDto, postingId, commentId, recommentId, userDetails.getUsername());
+        commentService.recommentUpdate(requestDto, postingId, commentId, recommentId, userDetails.getUsername());
+        return ApiUtils.success(200, "대댓글이 수정되었습니다.");
     }
 
     @DeleteMapping("/comment/{commentId}/recomment/{recommentId}") //대댓글 삭제
-    public Long deleteRecomment(@PathVariable Long postingId, @PathVariable Long commentId, @PathVariable Long recommentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public CommonResponse<?> deleteRecomment(@PathVariable Long postingId, @PathVariable Long commentId, @PathVariable Long recommentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         //로그인 여부 확인
         if (userDetails == null) {
             throw new InvalidValueException(ErrorCode.HANDLE_ACCESS_DENIED);
         }
-        return commentService.recommentDelete(commentId, recommentId, userDetails.getUsername());
+        commentService.recommentDelete(commentId, recommentId, userDetails.getUsername());
+        return ApiUtils.success(200, "대댓글이 삭제되었습니다.");
     }
 
 }

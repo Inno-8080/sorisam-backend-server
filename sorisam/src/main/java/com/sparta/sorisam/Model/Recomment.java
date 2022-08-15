@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(name = "recomment")
 public class Recomment extends Timestamped {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recommentId;
 
     @ManyToOne

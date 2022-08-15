@@ -51,7 +51,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 
                 // api 요청 접근 허용
-                .antMatchers("/user/**").permitAll()
                 .antMatchers("**").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
