@@ -46,17 +46,6 @@ public class Posting extends Timestamped{
     @JsonIgnoreProperties({"posting"})
     private List<PostingLike> postingLikeList = new ArrayList<>();
 
-//    @Column
-//    private Long cntPostLike = 0L;
-
-//    @Builder
-//    public Posting(String username, String title, String img, String filePath, String contents){
-//        this.username = username;
-//        this.title = title;
-//        this.img = img;
-//        this.filePath = filePath;
-//        this.contents = contents;
-//    }
 
     public Posting(PostingRequestDto requestDto, String username, String img, String intro) {
         this.title = requestDto.getTitle();

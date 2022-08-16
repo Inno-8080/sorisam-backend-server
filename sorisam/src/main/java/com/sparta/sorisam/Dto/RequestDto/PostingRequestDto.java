@@ -1,6 +1,5 @@
 package com.sparta.sorisam.Dto.RequestDto;
 
-import com.sparta.sorisam.Model.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +12,5 @@ public class PostingRequestDto {
     private String contents;
 
     private String filePath;
-//
-//    private User user;
+
 }

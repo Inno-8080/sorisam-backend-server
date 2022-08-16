@@ -31,9 +31,6 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-    @Column(nullable = false)
-    private Long cntLike;
-
     // comment recomment 연관 관계 설정
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recomment> recomments = new ArrayList<>();
@@ -42,7 +39,6 @@ public class Comment extends Timestamped {
         this.posting = post;
         this.username = ""; //로그인된 유저 정보 받아오기
         this.contents = contents;
-        this.cntLike = 0L;
         this.recomments = new ArrayList<>();
     }
 
