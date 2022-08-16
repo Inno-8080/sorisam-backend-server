@@ -5,14 +5,11 @@ import com.sparta.sorisam.Dto.RequestDto.LoginRequestDto;
 import com.sparta.sorisam.Dto.RequestDto.SignupRequestDto;
 import com.sparta.sorisam.global.common.response.ApiUtils;
 import com.sparta.sorisam.global.common.response.CommonResponse;
-import com.sparta.sorisam.global.common.response.SuccessResponse;
 import com.sparta.sorisam.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -29,9 +26,9 @@ public class UserController {
     }
 
     @PostMapping("/api/login")
-    public SuccessResponse<?> login(@RequestBody LoginRequestDto loginRequestDto) {
+    public CommonResponse<?> login(@RequestBody LoginRequestDto loginRequestDto) {
         String token = userService.login(loginRequestDto);
-        return ApiUtils.loginsuccess(200, "로그인에 성공하였습니다.", token);
+        return ApiUtils.success(200, token);
     }
 
 }

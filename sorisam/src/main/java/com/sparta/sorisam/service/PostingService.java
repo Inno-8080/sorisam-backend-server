@@ -6,11 +6,9 @@ import com.sparta.sorisam.Dto.RequestDto.PostingUpdateRequestDto;
 import com.sparta.sorisam.Dto.ResponseDto.PostingDetailResponseDto;
 import com.sparta.sorisam.Dto.ResponseDto.PostingResponseDto;
 import com.sparta.sorisam.Model.Posting;
-//import com.sparta.sorisam.Repository.LikeRepository;
 import com.sparta.sorisam.Model.PostingLike;
 import com.sparta.sorisam.Repository.LikeRepository;
 import com.sparta.sorisam.Repository.PostingRepository;
-import com.sparta.sorisam.Repository.UserRepository;
 import com.sparta.sorisam.global.error.exception.EntityNotFoundException;
 import com.sparta.sorisam.global.error.exception.ErrorCode;
 import com.sparta.sorisam.global.error.exception.InvalidValueException;
@@ -27,11 +25,10 @@ public class PostingService {
     private final PostingRepository postingRepository;
 
     private final LikeRepository likeRepository;
-    private final UserRepository userRepository;
 
 
     // 게시글 작성
-    @Transactional
+    @Transactional // 메서드의 실행, 종료, 예외를 기준으로 각각 실행(begin), 종료(commit), 예외(rollback)를 자동으로 처리해 준다.
     public Posting createPosting(PostingRequestDto postingRequestDto, String username, String img, String intro) {
         String title = postingRequestDto.getTitle();
         String contents = postingRequestDto.getContents();

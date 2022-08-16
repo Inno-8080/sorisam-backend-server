@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ErrorResponse {
+public class ErrorResponse { // 사용자에게 JSON 형식으로 보여주기 위해 에러 응답 형식을 지정한다.
     private int code;
     private String message;
 
@@ -52,9 +52,9 @@ public class ErrorResponse {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class FieldError {
-        private String field;
-        private String value;
-        private String reason;
+        private String field; // 에러 발생 필드
+        private String value; // 들어온 값
+        private String reason; // 에러 메시지
 
         private FieldError(final String field, final String value, final String reason) {
             this.field = field;
@@ -63,12 +63,15 @@ public class ErrorResponse {
         }
 
         public static List<FieldError> of(final String field, final String value, final String reason) {
+            // FieldError 담을 리스트
             List<FieldError> fieldErrors = new ArrayList<>();
+            // 해당 필드에서 이름, 들어온 값, 에러메시지를 뽑아 담는다.
             fieldErrors.add(new FieldError(field, value, reason));
             return fieldErrors;
         }
 
         private static List<FieldError> of(final BindingResult bindingResult) {
+            // 에러에서 BindingResult 를 가져오고, 해당 BindingResult 에서 발생한 FieldError 를 모두 가져와 리스트에 담는다.
             final List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
             return fieldErrors.stream()
                     .map(error -> new FieldError(

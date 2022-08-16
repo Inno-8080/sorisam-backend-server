@@ -4,7 +4,6 @@ import com.sparta.sorisam.Dto.RequestDto.PostingRequestDto;
 import com.sparta.sorisam.Dto.RequestDto.PostingUpdateRequestDto;
 import com.sparta.sorisam.Dto.ResponseDto.PostingDetailResponseDto;
 import com.sparta.sorisam.Dto.ResponseDto.PostingResponseDto;
-import com.sparta.sorisam.Repository.PostingRepository;
 import com.sparta.sorisam.global.common.response.ApiUtils;
 import com.sparta.sorisam.global.common.response.CommonResponse;
 import com.sparta.sorisam.global.error.exception.ErrorCode;
@@ -23,7 +22,6 @@ import java.util.List;
 public class PostingController {
 
     private final PostingService postingService;
-    private final PostingRepository postingRepository;
 
     // 게시글 작성
     @PostMapping

@@ -1,7 +1,6 @@
 package com.sparta.sorisam.Dto.ResponseDto;
 
 import com.sparta.sorisam.Model.Posting;
-import com.sparta.sorisam.Model.User;
 import lombok.Builder;
 import lombok.Getter;
 

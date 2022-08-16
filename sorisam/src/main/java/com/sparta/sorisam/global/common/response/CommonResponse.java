@@ -5,19 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class CommonResponse<T> {
+public class CommonResponse<T> { // HTTP Request 에 대한 응답 데이터를 포함하는 클래스
     private final int code;
-    private final boolean success;
-
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private final T result;
 
 
     @Builder
-    public CommonResponse(int code, boolean success, T result) {
+    public CommonResponse(int code, T result) {
         this.code = code;
-        this.success = success;
         this.result = result;
     }
 }
