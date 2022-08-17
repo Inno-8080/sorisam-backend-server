@@ -9,11 +9,13 @@ import com.sparta.sorisam.global.error.exception.EntityNotFoundException;
 import com.sparta.sorisam.global.error.exception.ErrorCode;
 import com.sparta.sorisam.global.error.exception.InvalidValueException;
 import com.sparta.sorisam.jwt.JwtTokenProvider;
+import com.sparta.sorisam.util.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.regex.Pattern;
@@ -24,12 +26,13 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final S3Service s3Service;
 
-    public void registerUser(SignupRequestDto requestDto) {
+    public void registerUser(SignupRequestDto requestDto, MultipartFile filePath) {
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
         String repassword = requestDto.getRepassword();
-        String img = requestDto.getImg();
+//        String img = requestDto.getImg();
         String intro = requestDto.getIntro();
         String pattern = "^[a-zA-Z0-9]*$";
 
@@ -48,6 +51,11 @@ public class UserService {
         } else if (intro.length() < 1) {
             throw new InvalidValueException(ErrorCode.INVALID_INPUT_INTRO);
         }
+        String img = "";
+        if (filePath != null) {
+            img = s3Service.uploadAudio(filePath);
+        }
+
 
         userRepository.save(new User(username, passwordEncoder.encode(password), img, intro));
     }
