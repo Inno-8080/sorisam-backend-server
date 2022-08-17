@@ -38,7 +38,8 @@ public enum ErrorCode { // 효율적으로 예외를 관리하기 위해 모든 
     INVALID_INPUT_CONTENTS(400, "내용을 입력해 주세요"),
     INVALID_INPUT_FILEPATH(400, "파일을 업로드해 주세요"),
     NOTFOUND_POST(404, "해당 게시글이 존재하지 않습니다."),
-    CONVERTING_FAILED(400, "파일 변환에 실패했습니다."),
+    UPLOAD_FAILED(400, "파일 업로드에 실패했습니다."),
+    INVALID_FILE_EXTENSION(400, "파일 확장자를 확인해 주세요."),
 
     // 댓글
     NOTFOUND_COMMENT(404, "해당 댓글이 존재하지 않습니다."),
