@@ -3,10 +3,7 @@ package com.sparta.sorisam.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sparta.sorisam.Dto.RequestDto.PostingRequestDto;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,6 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "posting")
+@Builder
+@AllArgsConstructor
 public class Posting extends Timestamped{
 
     @Id
@@ -56,10 +55,20 @@ public class Posting extends Timestamped{
         this.intro = intro;
     }
 
-    public void updatePosting(String title, String filePath, String contents) {
+    public Posting(String title, String contents, String filePath, String username, String img, String intro) {
         this.title = title;
-        this.filePath = filePath;
         this.contents = contents;
+        this.filePath = filePath;
+        this.username = username;
+        this.img = img;
+        this.intro = intro;
+    }
+
+
+    public void updatePosting(String title, String contents, String filePath) {
+        this.title = title;
+        this.contents = contents;
+        this.filePath = filePath;
     }
 
 }

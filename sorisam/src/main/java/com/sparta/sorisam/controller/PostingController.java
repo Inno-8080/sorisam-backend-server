@@ -11,9 +11,13 @@ import com.sparta.sorisam.global.error.exception.InvalidValueException;
 import com.sparta.sorisam.security.UserDetailsImpl;
 import com.sparta.sorisam.service.PostingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,8 +28,11 @@ public class PostingController {
     private final PostingService postingService;
 
     // 게시글 작성
-    @PostMapping
-    public CommonResponse<?> createPosting(@RequestBody PostingRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public CommonResponse<?> createPosting(@RequestPart @Valid PostingRequestDto requestDto,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                           @RequestPart(required = false) MultipartFile audioFile) {
         // 로그인 되어 있는 ID의 username
 
         if (userDetails == null) {
@@ -35,7 +42,7 @@ public class PostingController {
         String username = userDetails.getUsername();
         String img = userDetails.getUserImg();
         String intro = userDetails.getUserIntro();
-        postingService.createPosting(requestDto, username, img, intro);
+        postingService.createPosting(requestDto, username, img, intro, audioFile);
         return ApiUtils.success(200, "게시글이 등록되었습니다.");
     }
 
@@ -52,8 +59,11 @@ public class PostingController {
     }
 
     // 게시글 수정
-    @PutMapping("/{id}")
-    public CommonResponse<?> updatePosting(@PathVariable long id, @RequestBody PostingUpdateRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PutMapping(value = "{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public CommonResponse<?> updatePosting(@PathVariable long id,
+                                           @RequestPart @Valid PostingUpdateRequestDto requestDto,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                           @RequestPart(required = false) MultipartFile audioFile) {
 
         if (userDetails == null) {
             throw new InvalidValueException(ErrorCode.HANDLE_ACCESS_DENIED);
@@ -62,13 +72,14 @@ public class PostingController {
         String username = userDetails.getUsername();
         requestDto.setUsername(username);
 
-        postingService.updatePosting(id, requestDto, username);
+        postingService.updatePosting(id, requestDto, username, audioFile);
         return ApiUtils.success(200, "게시글이 수정되었습니다.");
     }
 
     // 게시글 삭제
     @DeleteMapping("/{id}")
-    public CommonResponse<?> deletePosting(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public CommonResponse<?> deletePosting(@PathVariable Long id,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         if (userDetails == null) {
             throw new InvalidValueException(ErrorCode.HANDLE_ACCESS_DENIED);
