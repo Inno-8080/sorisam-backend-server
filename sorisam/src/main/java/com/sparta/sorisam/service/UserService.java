@@ -56,8 +56,6 @@ public class UserService {
             throw new InvalidValueException(ErrorCode.INVALID_PASSWORD);
         } else if (intro.length() < 1) {
             throw new InvalidValueException(ErrorCode.INVALID_INPUT_INTRO);
-        } else if (img.length() < 1) {
-            throw new InvalidValueException(ErrorCode.INVALID_INPUT_FILEPATH);
         }
 
         userRepository.save(new User(username, passwordEncoder.encode(password), img, intro));
