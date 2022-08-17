@@ -9,6 +9,7 @@ import com.sparta.sorisam.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -20,8 +21,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/signup")
-    public CommonResponse<?> registerUser(@Valid @RequestBody SignupRequestDto requestDto) {
-        userService.registerUser(requestDto);
+    public CommonResponse<?> registerUser(@Valid @RequestBody SignupRequestDto requestDto, MultipartFile img) {
+        userService.registerUser(requestDto,img);
         return ApiUtils.success(201, "회원가입에 성공하였습니다.");
     }
 
