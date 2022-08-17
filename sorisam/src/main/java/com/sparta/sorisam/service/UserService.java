@@ -9,7 +9,8 @@ import com.sparta.sorisam.global.error.exception.EntityNotFoundException;
 import com.sparta.sorisam.global.error.exception.ErrorCode;
 import com.sparta.sorisam.global.error.exception.InvalidValueException;
 import com.sparta.sorisam.jwt.JwtTokenProvider;
-import com.sparta.sorisam.util.S3Service;
+import com.sparta.sorisam.util.S3AudioService;
+import com.sparta.sorisam.util.S3ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +27,7 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final S3Service s3Service;
+    private final S3ImageService s3ImageService;
 
     public void registerUser(SignupRequestDto requestDto, MultipartFile filePath) {
         String username = requestDto.getUsername();
@@ -40,6 +41,11 @@ public class UserService {
             throw new InvalidValueException(ErrorCode.USERNAME_DUPLICATION);
         }
 
+        String img = "";
+        if (filePath != null) {
+            img = s3ImageService.uploadImg(filePath);
+        }
+
         if (username.length() < 4) {
             throw new InvalidValueException(ErrorCode.INVALID_INPUT_USERNAME);
         } else if (!Pattern.matches(pattern, username)) {
@@ -50,12 +56,9 @@ public class UserService {
             throw new InvalidValueException(ErrorCode.INVALID_PASSWORD);
         } else if (intro.length() < 1) {
             throw new InvalidValueException(ErrorCode.INVALID_INPUT_INTRO);
+        } else if (img.length() < 1) {
+            throw new InvalidValueException(ErrorCode.INVALID_INPUT_FILEPATH);
         }
-        String img = "";
-        if (filePath != null) {
-            img = s3Service.uploadAudio(filePath);
-        }
-
 
         userRepository.save(new User(username, passwordEncoder.encode(password), img, intro));
     }

@@ -12,16 +12,14 @@ import com.sparta.sorisam.Repository.PostingRepository;
 import com.sparta.sorisam.global.error.exception.EntityNotFoundException;
 import com.sparta.sorisam.global.error.exception.ErrorCode;
 import com.sparta.sorisam.global.error.exception.InvalidValueException;
-import com.sparta.sorisam.util.S3Service;
+import com.sparta.sorisam.util.S3AudioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -29,7 +27,7 @@ public class PostingService {
     private final PostingRepository postingRepository;
 
     private final LikeRepository likeRepository;
-    private final S3Service s3Service;
+    private final S3AudioService s3AudioService;
 
 
     // 게시글 작성
@@ -37,7 +35,7 @@ public class PostingService {
     public Posting createPosting(PostingRequestDto postingRequestDto, String username, String img, String intro, MultipartFile audioFile) {
         String filePath = "";
         if (audioFile != null) {
-            filePath = s3Service.uploadAudio(audioFile);
+            filePath = s3AudioService.uploadAudio(audioFile);
         }
 
         String title = postingRequestDto.getTitle();
@@ -94,7 +92,7 @@ public class PostingService {
 
         String filePath = "";
         if (audioFile != null) {
-            filePath = s3Service.uploadAudio(audioFile);
+            filePath = s3AudioService.uploadAudio(audioFile);
         }
 
         String title = dto.getTitle();
@@ -121,7 +119,7 @@ public class PostingService {
             throw new InvalidValueException(ErrorCode.NOT_AUTHORIZED);
         }
         postingRepository.deleteById(id);
-        s3Service.deleteObjectByFilePath(posting.getFilePath());
+        s3AudioService.deleteObjectByFilePath(posting.getFilePath());
     }
 
     private Posting exists(long id) {
