@@ -28,21 +28,21 @@ public class S3ImageService {
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;  // S3 버킷 이름
 
-    //오디오파일 업로드
+    //이미지파일 업로드
     @Transactional
     public String uploadImg(MultipartFile multipartFile) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         if (multipartFile.getContentType().equals("multipart/form-data")
                 && getImgExtension(multipartFile.getOriginalFilename()).equals(".png")) {
-            objectMetadata.setContentType("audio/mp3");
+            objectMetadata.setContentType("image/basic");
         }
         if (multipartFile.getContentType().equals("multipart/form-data")
                 && getImgExtension(multipartFile.getOriginalFilename()).equals(".jpg")) {
-            objectMetadata.setContentType("audio/basic");
+            objectMetadata.setContentType("image/basic");
         }
         if (multipartFile.getContentType().equals("multipart/form-data")
                 && getImgExtension(multipartFile.getOriginalFilename()).equals(".gif")) {
-            objectMetadata.setContentType("audio/basic");
+            objectMetadata.setContentType("image/basic");
         }
 
         //objectMetaData 에 파라미터로 들어온 파일의 타입 , 크기를 할당.
