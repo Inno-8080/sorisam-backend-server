@@ -60,6 +60,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "**/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
+                .antMatchers(HttpMethod.GET, "api/login").permitAll()
+                .antMatchers(HttpMethod.GET, "api/signup").permitAll()
+                .antMatchers(HttpMethod.POST, "api/login").permitAll()
+                .antMatchers(HttpMethod.POST, "api/signup").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("**").permitAll()
                 .antMatchers("/api/signup").permitAll()
@@ -81,9 +85,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration config = new CorsConfiguration();
 
         config.addAllowedOrigin("*");
-        config.addAllowedOrigin("http://localhost:3000");
+//        config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedHeader("*");
-        config.setAllowedMethods(Arrays.asList("GET","POST","OPTIONS","PUT","DELETE"));
+        config.addAllowedMethod("*");
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
