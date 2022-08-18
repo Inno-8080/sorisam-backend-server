@@ -58,16 +58,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "**/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/posts").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/signup").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/signup").permitAll()
+                .antMatchers(HttpMethod.GET, "**/*").permitAll()
+                .antMatchers(HttpMethod.PUT, "**/*").permitAll()
+                .antMatchers(HttpMethod.POST, "**/*").permitAll()
+                .antMatchers(HttpMethod.DELETE, "**/*").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/login").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/signup").permitAll()
+//                .antMatchers(HttpMethod.POST, "/api/login").permitAll()
+//                .antMatchers(HttpMethod.POST, "/api/signup").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("**").permitAll()
-                .antMatchers("/api/signup").permitAll()
-                .antMatchers("/api/login").permitAll()
+//                .antMatchers("/api/signup").permitAll()
+//                .antMatchers("/api/login").permitAll()
 
                 // 그 외 모든 요청은 인증 과정 필요
                 .anyRequest().authenticated()
@@ -86,9 +89,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        config.addAllowedOrigin("*");
         config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+//        config.addAllowedHeader("*");
+//        config.addAllowedMethod("*");
         config.setAllowCredentials(true);
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT","OPTIONS","DELETE"));
+        config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        config.setExposedHeaders(Arrays.asList("Authorization"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
